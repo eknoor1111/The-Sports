@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    
+      <script>
+        function showPrev(fileRef,prevRef)
+         {
+          
+                         const [file] = fileRef.files
+                            if (file) {
+                                prevRef.src = URL.createObjectURL(file)
+                            }
+        }
+        function showprev(fileRef,prevRef)
+         {
+          
+                         const [file] = fileRef.files
+                            if (file) {
+                                prevRef.src = URL.createObjectURL(file)
+                            }
+        }
+</script>
+<script>
+   $(document).ready(function(){
+                $("#getdata").click(function()
+                {
+                  
+
+                    let obj={
+                        type:"get",
+                        url:"/get-data",
+                        data:{
+                            email:$("#txtEmail4").val()
+
+
+
+                               
+                                
+                        }
+                      
+                    }
+                   
+                    $.ajax(obj).then(
+                        function(responseJsonAry)
+                        {
+                                   
+            
+
+                            //alert(  JSON.stringify(responseJsonAry) )
+                            
+                            let emailid=responseJsonAry[0].emailid;
+                            alert(  JSON.stringify(responseJsonAry));
+                            let acardpicurl=responseJsonAry[0].acardpicurl;
+                            let profilepicurl =responseJsonAry[0].picurl;
+                            let address=responseJsonAry[0].address;
+                              let contactNo=responseJsonAry[0].contactNo;
+                              let games=responseJsonAry[0].games;
+                              let otherinfo=responseJsonAry[0].otherinfo;
+                          
+
+                             alert(emailid+"/n"+acardpicurl+"/n"+profilepicurl+"/n"+address+"/n"+contactNo+"/n"+games+"/n"+otherinfo);
+                             $("#organisation").val(orgname);
+                           $("#regNO").val(regnumber);
+                            $("#inputAddress2").val(address);
+                             $("#inputCity").val(city);
+                           $("#inputSport").val(sports);
+                             $("#cno").val(contact);
+                              $("#prev").prop("src",picurl);
+
+                             $("#hdn").val(picurl);
+
+                        }).fail(function(err){alert(err.message)})
+                })
+              })
+</script>
+   
+<script>
+   function showUser()
+   
+   {
+      let activeUser=localStorage.getItem("activeUser");
+      document.getElementById("txtEmail4").value=activeUser;
+   }
+</script>
+</head>
+<body onload="showUser();">
+    <div class="container">
+<form class="row g-3" method="post" enctype="multipart/form-data"action="/playerdetails" >
+  <div class="col-md-8">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input type="email" class="form-control" id="txtEmail4" name="txtEmail4">
+  </div>
+  <div class="col-md-4 mt-5">
+    <button type="button" class="btn btn-primary" id="getdata" >Get Data</button>
+  </div>
+  <div class="col-md-12">
+             <div class="col-md-12">
+            <label>UPLOAD FRONT ADHAAR CARD</label>
+            <input type="file" name="profilePic" id="profilePic" onchange="showPrev(this,previii)">
+        </div>
+            <img src="pics/7d38181b644ece7d42b63d3b69a1356c.jpg" width="100" height="100" id="previii" alt="">
+  
+        </div>
+        <div class="col-md-4">
+          <label  class="form-label">NAME</label>
+          <input type="text" class="form-control" id="num" name="num">
+        </div>
+        <div class="col-md-4">
+          <label  class="form-label">DATE OF BIRTH</label>
+          <input type="date" class="form-control" id="dob" name="dob">
+        </div>
+        <div class="col-md-4">
+          <label for="inputState" class="form-label">GENDER</label>
+          <select id="gender" class="form-select" name="gender`">
+            <option selected>choosee..</option>
+            <option value="PUNJAB">MALE</option>
+            <object value="HARYANA">FEMALE</object>
+          
+          </select>
+          </div>
+      
+
+        <div class="col-md-12">
+             <div class="col-md-12">
+            <label>UPLOAD PROFILE PIC</label>
+            <input type="file" name="profilePic1" id="profilePic1" onchange="showprev(this,prev)">
+        </div>
+            <img src="pics/7d38181b644ece7d42b63d3b69a1356c.jpg" width="100" height="100" id="prev" alt="">
+  
+        </div>
+  <div class="col-12">
+    <label for="inputAddress2" class="form-label">Address </label>
+    <input type="text" class="form-control" id="add" name="add" placeholder="Apartment, studio, or floor">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">Contact Number</label>
+    <input type="text" class="form-control" id="con" name="con">
+  </div>
+  <div class="col-md-6">
+    <label  class="form-label">Games You Play</label>
+    <input type="text" class="form-control" id="GAMES YOU PLAY" name="gup">
+  </div>
+  
+   <div class="col-md-12">
+    <label  class="form-label">OTHER INFO</label>
+    <input type="text" class="form-control" id="oinfo" name="oinfo">
+  </div>
+ 
+  <div class="col-6">
+    <button type="submit" class="btn btn-primary">UPLOAD DATA</button>
+  </div>
+   <div class="col-6">
+    <button type="submit" class="btn btn-primary">MODIFY</button>
+  </div>
+</form>
+</div>
+
+     
+</body>
+</html>

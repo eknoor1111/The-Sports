@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      cjrossorigin="anonymous"
+    />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script>
+         var mymodule= angular.module("kuchModule",[]);
+      
+      mymodule.controller("kuchController",function($scope,$http)
+      {
+
+        $scope.jsonArray=[];
+
+       $scope.doFetchAll=function()
+       {
+        alert();
+            var url="/do-fetch-all-users?InputEmail1="+localStorage.getItem("activeUser");
+
+            
+            $http.get(url).then(allGoodFx,someBadFx);
+            function allGoodFx(response)
+            {
+                //resp in JSON array
+               // alert(JSON.stringify(response.data));
+                $scope.jsonArray=response.data;
+            }
+
+            function someBadFx(response)
+            {
+                alert("ERROR:"+JSON.stringify(response.data));
+            }
+       }
+       //----------------------
+       $scope.doDelete=function(emailid)
+       {
+            alert(emailid);
+            var url="/delete-one?emailid1="+emailid;
+            
+            $http.get(url).then(allGoodFx,someBadFx);
+            function allGoodFx(response)
+            {
+               alert(response.data);//resp in string
+                $scope.doFetchAll();
+            }
+
+            function someBadFx(response)
+            {
+                alert(JSON.stringify(response.data));
+            }
+       }
+
+
+       })
+      
+        
+    </script>
+</head>
+<body ng-app="kuchModule" ng-controller="kuchController" ng-init="doFetchAll();">
+    <!-- <form>
+  <div class="col-8">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control"  id="idea" ng-model="idea" name="idea" aria-describedby="emailHelp">
+    <button type="button" class="btn btn-primary my-2" ng-click="doFetchAll();">Fetch All Records</button>
+
+    </div> -->
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">SR.NO</th>
+      <th scope="col">EMAIL ID</th>
+      <th scope="col">EVENTNAME</th>
+     <th scope="col">DATE OF EVENT</th>
+      <th scope="col">TIME OF EVENT</th>
+      <th scope="col">ADDRESS</th>
+      <th scope="col">CITY</th>
+      <th scope="col">SPORTS</th>
+      <th scope="col">MINAGE</th>
+      <th scope="col">MAXAGE</th>
+      <th scope="col">LAST DATE</th>
+      <th scope="col">FEE</th>
+      <th scope="col">PRIZE</th>
+      <th scope="col">CONTACT</th>
+       <th scope="col">OPERATIONS</th>
+      
+      
+    
+ 
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="obj in jsonArray">
+      
+      <td>{{obj.rid}}</td>
+      <td>{{obj.emailid}}</td>
+      <td>{{obj.eventname}}</td>
+      <td>{{obj.doe}}</td>
+      <td>{{obj.toe}}</td>
+      <td>{{obj.address}}</td>
+      <td>{{obj.city}}</td>
+      <td> {{obj.sports}}</td>
+      <td>{{obj.minage}}</td>
+      <td>{{obj.maxage}}</td>
+      <td>{{obj.lastdate}}</td>
+      <td>{{obj.fee}}</td>
+      <td>{{obj.prize}}</td>
+       <td>{{obj.contact}}</td>
+       
+          
+             <td>  <input type="button" ng-click="doDelete(obj.rid);" value="Remove"></td>
+            
+      
+        
+        
+    </tr>
+      
+  </tbody>
+</table>
+
+</body>
+</html>

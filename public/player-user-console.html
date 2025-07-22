@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+    crossorigin="anonymous"
+  />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script>
+         var mymodule= angular.module("user",[]);
+      
+      mymodule.controller("player",function($scope,$http)
+      {
+
+        $scope.jsonArray=[];
+
+       $scope.doFetchplayer=function()
+       {
+       // alert();
+            var url="/do-fetch-all-player";
+
+            
+            $http.get(url).then(allGoodFx,someBadFx);
+            function allGoodFx(response)
+            {
+                //resp in JSON array
+               // alert(JSON.stringify(response.data));
+                $scope.jsonArray=response.data;
+            }
+
+            function someBadFx(response)
+            {
+                alert("ERROR:"+JSON.stringify(response.data));
+            }
+       }
+       //----------------------
+       $scope.doDelete=function(emailid)
+       {
+            //alert(emailid);
+            var url="/delete-one?emailid1="+emailid;
+            
+            $http.get(url).then(allGoodFx,someBadFx);
+            function allGoodFx(response)
+            {
+               //alert(response.data);//resp in string
+                $scope.doFetchAll();
+            }
+
+            function someBadFx(response)
+            {
+                alert(JSON.stringify(response.data));
+            }
+       }
+    })
+        
+    </script>
+</head>
+<body ng-app="user" ng-controller="player" ng-init="doFetchplayer();" >
+     <nav class="navbar bg-body-primary bg-primary" >
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">USER ADMIN CONSOLE</span>
+  </div>
+</nav>
+
+      <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">SR.NO</th>
+      <th scope="col">EMAIL ID</th>
+      <th scope="col">ADHARPICURL</th>
+     <th scope="col">PROFILEPICURL</th>
+     <th scope="col">NAME</th>
+      <th scope="col">DATE OF BIRTH</th>
+      <th scope="col">GENDER</th>
+      <th scope="col">ADDRESS</th>
+      <th scope="col">CONTACT NO</th>
+      <th scope="col">GAMES</th>
+      <th scope="col">OTHERINFO</th>
+
+
+      
+      
+      
+    
+ 
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="obj in jsonArray">
+      
+      <td>{{obj.rid}}</td>
+      <td>{{obj.emailid}}</td>
+      <td>{{obj.acardpicurl}}</td>
+      <td>{{obj.profifepicurl}}</td>
+      <td>{{obj.nam}}</td>
+       <td>{{obj.dob}}</td>
+        <td>{{obj.gender}}</td>
+         <td>{{obj.address}}</td>
+          <td>{{obj.contactNo}}</td>
+ <td>{{obj.games}}</td>
+  <td>{{obj.otherinfo}}</td>
+     
+    
+       
+    
+</body>
+</html>

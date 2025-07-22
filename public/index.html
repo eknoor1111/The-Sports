@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
+  <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+    function showPrev(fileRef, prevRef) {
+      const [file] = fileRef.files
+      if (file) {
+        prevRef.src = URL.createObjectURL(file)
+      }
+    }
+
+  </script>
+  <script>
+    $(document).ready(function () {
+      $("#btnsign").click(function () {
+
+        $("#frmsign").fadeToggle(1000);
+        if ($("#btn").val() == "Show")
+          $("#btn").val("Hide");
+        else
+          $("#btn").val("Show");
+      })
+      //----------------------------
+      $("#cross").click(function () {
+
+        $("#frmsign").fadeOut(1000);
+      })
+
+      $("#btnsign2").click(function () {
+        let utype = $("#combo").val();
+        alert(utype);
+
+        let obj = {
+          type: "get",
+          url: "/server-index",
+          data: {
+            txtEmail: $("#txtEmail").val(),
+            txtPwd: $("#txtPassword").val(),
+            combo: utype,
+          }
+        }
+
+
+        $.ajax(obj).then(
+          function (responseJsonAry) {
+            alert(JSON.stringify(responseJsonAry))
+
+
+
+
+          }).fail(function (err) { alert(err.message) })
+      })
+
+      $("#btnsign3").click(function () {
+
+
+        let obj = {
+          type: "get",
+          url: "/login-server",
+          data: {
+            txtEmail: $("#txtEmail1").val(),
+            txtPwd: $("#txtPassword2").val(),
+
+
+          }
+
+        }
+
+
+        $.ajax(obj).then(
+          function (response) {
+            if (response == "Blocked")
+              alert("Sorry!! Ur Id is Blocked");
+            else if (response == "Invalid")
+              alert("Invalid emailid or Password");
+            else
+              if (response == "Player") {
+                localStorage.setItem("activeUser", $("#txtEmail1").val());
+                location.href = "dash-player.html";
+              }
+              else if (response == "Organization") {
+                localStorage.setItem("activeUser", $("#txtEmail1").val());
+                location.href = "org-dash.html";
+              }
+              else if (response == "Admin") {
+                localStorage.setItem("activeUser", $("#txtEmail1").val());
+                location.href = "dash-admin.html";
+              }
+
+
+
+
+          }).fail(function (err) { alert(err.message) })
+      })
+    })
+
+
+
+
+  </script>
+  <script>
+
+    $(document).ready(function () {
+      // --- existing signup/login AJAX code ---
+
+      // Fix: Eye icon toggle should be inside document.ready
+      $("#eye").click(function () {
+        let inputType = $("#txtPassword2").attr("type");
+        if (inputType === "password") {
+          $("#txtPassword2").attr("type", "text");
+          $("#eye").removeClass("fa-eye-slash").addClass("fa-eye");
+        } else {
+          $("#txtPassword2").attr("type", "password");
+          $("#eye").removeClass("fa-eye").addClass("fa-eye-slash");
+        }
+      });
+      $("#eye-signup").click(function () {
+        let inputType = $("#txtPassword").attr("type");
+        if (inputType === "password") {
+          $("#txtPassword").attr("type", "text");
+          $("#eye-signup").removeClass("fa-eye-slash").addClass("fa-eye");
+        } else {
+          $("#txtPassword").attr("type", "password");
+          $("#eye-signup").removeClass("fa-eye").addClass("fa-eye-slash");
+        }
+      });
+    });
+  </script>
+
+
+</head>
+
+<body>
+  <!-- <nav class="navbar bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand " >
+      <img src="pics/welcome.webp" alt="Logo" width="80" height="35" class="rounded d-inline-block align-text-top" style="background-size: contain; height: 50px; width: 150px;">
+    </a>
+        <button type="button" class="btn btn-dark" style="margin-top: 20px;" id="btnsign2" formaction="/server-index">SIGNUP</button> 
+    
+
+  </div>
+</nav> -->
+  <center>
+
+
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Signup
+</button> -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">SIGNUP FORM</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="frmsign">
+
+              <div class="mb-3" id="sign">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              </div>
+              <div class="mb-3 position-relative">
+                <label for="txtPassword" class="form-label">Password</label>
+                <input type="password" class="form-control pe-5" id="txtPassword">
+                <i class="fa-solid fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3" id="eye-signup"
+                  style="cursor: pointer; margin-top: 15px;"></i>
+              </div>
+
+
+              <div class="dropdown">
+
+                <select class="form-select" id="combo" aria-label="Default select example">
+                  <option selected>Choose Usertype </option>
+                  <option value="Player">Player</option>
+                  <option value="Organization">Organization</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-dark" style="margin-top: 20px;" id="btnsign2"
+                formaction="/server-index">SIGNUP</button>
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- <nav class="navbar bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand " >
+      <img src="pics/welcome.webp" alt="Logo" width="80" height="35" class="rounded d-inline-block align-text-top" style="background-size: contain; height: 50px; width: 150px;">
+    </a>
+        <button type="button" class="btn btn-dark" style="margin-top: 20px;" id="btnsign2" formaction="/server-index">SIGNUP</button> 
+    
+
+  </div>
+</nav> -->
+
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  login
+</button> -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">LOGIN FORM</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/login-server">
+
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="txtEmail1" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input type="password" class="form-control" id="txtPassword2" placeholder="Password">
+
+
+                <label for="floatingPassword">Password</label>
+
+                <i class="fa-solid fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3" id="eye"
+                  style="cursor: pointer;"></i>
+
+              </div>
+              <button type="button" class="btn btn-primary" id="btnsign3" formaction="/login-server">LOGIN</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- <a href="org-dash.html" class="btn btn-primary">org-dash</a>
+<a href="dash-player.html" class="btn btn-primary">player-dash</a> -->
+    <!-- <a href="dash-admin.html" class="btn btn-primary">Admin Dash</a> -->
+
+</body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="pics/welcome.webp" alt="Logo" width="150" height="50" class="d-inline-block align-text-top rounded" />
+    </a>
+
+    <div class="d-flex ms-auto">
+      <!-- Signup Button -->
+      <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Signup
+      </button>
+      <!-- Login Button -->
+      <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Login
+      </button>
+    </div>
+  </div>
+</nav>
+<div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="pics/football.jpeg" class="d-block w-100" alt="..." style="height: 350px;">
+    </div>
+    <div class="carousel-item">
+      <img src="pics/football2.jpeg" class="d-block w-100" alt="..." style="height: 300px; object-fit: contain;">
+    </div>
+    <div class="carousel-item">
+      <img src="pics/sports.webp" class="d-block w-100" alt="..." height="300px">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+    <p>
+    <h2>OUR SERVICES</h2>
+    </p>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card h-80">
+            <img src="pics/tournament.png" class="card-img-top" alt="Card 1">
+            <div class="card-body">
+              <h4>TOURNAMENT</h4>
+              <p class="card-text">A tournament is a competitive event where individuals or teams compete in a series of
+                matches or games, ultimately aiming to determine a winner. Tournaments can be organized in various
+                formats such as knockout, round-robin, or league style, and are commonly held in sports, esports,
+                academics, and other competitive fields.
+
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card h-80">
+            <img src="pics/player.png" class="card-img-top" alt="Card 2">
+            <div class="card-body">
+              <h4>PLAYERS</h4>
+              <p class="card-text">Players are the heart of any sport or tournament. They bring energy, skill, and
+                determination to the game, striving to perform at their best individually or as part of a team. Each
+                player contributes to the competition through their unique strengths, discipline, and sportsmanship,
+                making every match engaging and memorable.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card h-80">
+            <img src="pics/benefits of sport.png" class="card-img-top" alt="Card 3">
+
+            <div class="card-body">
+              <h4>BENEFITS OF SPORT</h4>
+              <p class="card-text">Sports play a vital role in promoting physical fitness, mental well-being, and
+                teamwork. They help improve strength, coordination, and endurance while also building confidence,
+                discipline, and leadership skills. Regular participation in sports encourages a healthy lifestyle and
+                fosters social connections and a sense of fair play.
+
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card h-80">
+            <img src="pics/organizers.png" class="card-img-top" alt="Card 4">
+            <div class="card-body">
+              <h4>ORGANIZERS</h4>
+              <p class="card-text">Organizers play a crucial role in planning and executing events, especially in sports
+                tournaments. They are responsible for scheduling matches, arranging venues, managing logistics, ensuring
+                safety, and coordinating with teams, officials, and sponsors. Good organizers ensure smooth operations,
+                fairness.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>
+    <h2>OUR MISSION</h2>
+    </p>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-80">
+            <img src="pics/heloindia4.png" class="card-img-top" alt="Card 1" style="height: 512px;">
+
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="card h-80">
+            <div class="card-body">
+              <h4>OBJECTIVE OF KHELO INDIA</h4>
+              <p class="card-text">Khelo India is a national program launched by the Government of India in 2018 to
+                promote sports and physical fitness among the youth. Its main objective is to revive the sports culture
+                at the grassroots level and build a strong framework for sports development across the country.
+
+                The program identifies talented athletes, provides them with training and financial support, and
+                organizes events like the Khelo India Youth Games and Khelo India University Games. It aims to encourage
+                participation in various sports and foster a healthier, stronger nation through physical activity.
+              <p>
+
+                Key Features:<br>
+
+                1. Talent identification and nurturing<br>
+
+                2. Annual sports competitions<br>
+
+                3. Scholarships and infrastructure development<br>
+
+                4. Focus on school, college, and university-level sports<br>
+
+              <h5>Khelo India’s slogan, "Kheloge Kudoge Banoge Lajawaab", reflects its mission to build a fit and
+                sports-ready India
+                .</h5><br>
+              </p>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>
+    <h2>MEET THE DEVELOPERS</h2>
+    </p>
+     <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-80">
+            <img src="pics/heloindia4.png" class="card-img-top" alt="Card 1" style="height: 400px;">
+
+          </div>
+        </div>
+          
+        <div class="col-md-6">
+          <div class="card h-80">
+            <img src="pics/heloindia4.png" class="card-img-top" alt="Card 1" style="height: 400px;">
+
+          </div>
+        </div>
+          </div>
+      </div>
+
+<h2>REACH US</h2>
+<div>
+  <div class="container mt-3">
+    <div class="row justify-content-center g-4">
+      <!-- Card 1 -->
+      <div class="col-md-6">
+        <div class="card h-40">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d27582.331756607466!2d74.94564763244033!3d30.214498637035735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sstock%20market%20learning%20institute%20near%20me!5e0!3m2!1sen!2sin!4v1749705816740!5m2!1sen!2sin"
+            width="100%" height="265" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+        <div class="col-md-6 height">
+        <div class="card h-80">
+          <div class="card-body">
+            <h5 class="card-title">SOCIAL MEDIA</h5>
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+              <a href="https://www.instagram.com" target="_blank">
+                <img src="pics/instagram.jpeg" alt="Instagram" style="height: 60px; width: 60px; margin-left: 10px;">
+              </a>
+
+              <a href="https://www.facebook.com\\" target="_blank">
+                <img src="pics/facebook2.png" alt="Facebook" style="height: 80px; width: 80px; margin-left: 10px;">
+              </a>
+
+              <a href="https://www.twitter.com" target="_blank">
+                <img src="pics/images.png" alt="Twitter" style="height: 70px; width: 80px; margin-left: 10px;">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+    </body>
+
+</html>

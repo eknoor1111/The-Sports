@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+     <script>
+    $(document).ready(function(){
+                $("#btnPub").click(function()
+                {
+                  let email=$("#inputEmail5").val();
+                  alert(email);
+
+                    let obj={
+                        type:"get",
+                        url:"/tournament-server",
+                        data:{
+                            emailid:$("#inputEmail5").val(),
+                            eventname:$("#Event").val(),
+                            doe:$("#dot").val(),
+                            toe:$("#tof").val(),
+                            address:$("#inputAddress").val(),
+                            city:$("#cty").val(),
+                            sports:$("#inputState").val(),
+                            minage:$("#inputCity").val(),
+                            maxage:$("#inputZip").val(),
+                            lastdate:$("#ldof").val(),
+                            fee:$("#fii").val(),
+                            prize:$("#prm").val(),
+                            contact:$("#cnp").val()
+
+
+                            
+                               
+                                
+                        }
+                      
+                    }
+                   
+                    $.ajax(obj).then(
+                        function(responseJsonAry)
+                        {
+                            alert(  JSON.stringify(responseJsonAry) )
+                            //let emailid=responseJsonAry[0].emailid;
+                            //alert(  JSON.stringify(responseJsonAry) )
+                        }).fail(function(err){alert(err.message)})
+                })
+            })
+            </script>
+            <script>
+   function showUser()
+   
+   {
+      let activeUser=localStorage.getItem("activeUser");
+      document.getElementById("inputEmail5").value=activeUser;
+   }
+</script>
+
+</head>
+
+<body onload="showUser();">
+    <div class="container mt-5  ">
+    <form class="row g-3" >
+  <div class="col-md-10">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input type="email" class="form-control" id="inputEmail5" readonly>
+  </div>
+
+  <div class="col-md-4">
+    <label  class="form-label">EVENT NAME</label>
+    <input type="text" class="form-control" id="Event">
+  </div>
+  <div class="col-md-4">
+    <label  class="form-label">DATE</label>
+    <input type="date" class="form-control" id="dot">
+
+  </div>
+   <div class="col-md-4">
+    <label  class="form-label">TIME</label>
+    <input type="time" class="form-control" id="tof">
+
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">STATE</label>
+    <select id="inputSport" class="form-select">
+      <option selected>choosee..</option>
+      <option value="PUNJAB">PUNJAB</option>
+      <object value="HARYANA">HARYANA</object>
+      <object value="RAJASTHAN">RAJASTHAN</object>
+      <object value="DELHI">DELHI</object>
+    </select>
+  
+  <div class="col-8">
+    <label for="inputAddress" class="form-label">Address</label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+  </div>
+  <div class="col-4">
+    <label for="inputAddress2" class="form-label">CITY</label>
+    <input type="text" class="form-control" id="cty" placeholder="city">
+  </div>
+  
+  <div class="col-md-6">
+    <label for="inputState" class="form-label">SPORT CATEGORIES</label>
+    <select id="sports" class="form-select">
+      <option selected>Choose.</option>
+      <option>cricket</option>
+      <option>table tennis</option>
+      <option>running</option>
+      <option>kho kho</option>
+      <option>badminton</option>
+    
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label for="inputCity" class="form-label">MIN.AGE</label>
+    <input type="number" class="form-control" id="inputCity">
+  </div>
+  <div class="col-md-3">
+    <label for="inputZip" class="form-label">MAX.AGE</label>
+    <input type="number" class="form-control" id="inputZip">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">LAST DATE OF REGISTRATION</label>
+    <input type="date" class="form-control" id="ldof">
+  </div>
+  
+  <div class="col-md-3">
+    <label for="inputCity" class="form-label">FEE</label>
+    <input type="number" class="form-control" id="fii">
+  </div>
+  <div class="col-md-3">
+    <label for="inputZip" class="form-label">PRIZE MONEY</label>
+    <input type="number" class="form-control" id="prm">
+  </div>
+  <div class="col-md-8">
+    <label for="inputZip" class="form-label">CONTACT PERSON</label>
+    <input type="text" class="form-control" id="cnp">
+  </div>
+  <div></div>
+  </div>
+
+  <div class="col-12">
+    <button type="button" class="btn btn-primary py-2 px-4" style="margin-left: 120px;" id="btnPub">PUBLISH EVENT</button>
+  </div>
+
+</form>
+
+</div>
+</body>
+
+</html>
